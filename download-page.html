@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скачать калькулятор Акселион</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+        }
+        .qr-code {
+            margin: 20px 0;
+            padding: 10px;
+            background: white;
+            display: inline-block;
+        }
+        .download-btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 18px;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .instructions {
+            text-align: left;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 Калькулятор Акселион</h1>
+        <p>Для установки на телефон скачайте файл:</p>
+        
+        <div class="qr-code">
+            <!-- QR-код для скачивания -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/Andrey338-MOLOt/team-project-group-1/raw/main/web-calculator.html" 
+                 alt="QR-код для скачивания калькулятора">
+        </div>
+        
+        <p>Отсканируйте QR-код или нажмите кнопку:</p>
+        
+        <a href="https://github.com/Andrey338-MOLOt/team-project-group-1/raw/main/web-calculator.html" 
+           class="download-btn" download="calculator.html">
+            📥 Скачать калькулятор
+        </a>
+        
+        <a href="https://github.com/Andrey338-MOLOt/team-project-group-1/raw/main/calculator-project.zip" 
+           class="download-btn" download="calculator-project.zip">
+            📦 Скачать полный проект
+        </a>
+        
+        <div class="instructions">
+            <h3>📱 Инструкция для телефона:</h3>
+            <ol>
+                <li>Скачайте файл калькулятора</li>
+                <li>Откройте файл в браузере</li>
+                <li>Добавьте страницу в закладки</li>
+                <li>Или создайте ярлык на рабочем столе</li>
+            </ol>
+            
+            <h3>💻 Инструкция для компьютера:</h3>
+            <ol>
+                <li>Скачайте полный проект (ZIP)</li>
+                <li>Распакуйте архив</li>
+                <li>Запустите <code>src/calculator.py</code> (требуется Python)</li>
+                <li>Или откройте <code>web-calculator.html</code> в браузере</li>
+            </ol>
+        </div>
+        
+        <p style="margin-top: 20px; color: #666;">
+            Команда Акселион | БИЗ-Б-0-Д-2025-1<br>
+            <small>GitHub: <a href="https://github.com/Andrey338-MOLOt/team-project-group-1">github.com/Andrey338-MOLOt/team-project-group-1</a></small>
+        </p>
+    </div>
+</body>
+</html>
