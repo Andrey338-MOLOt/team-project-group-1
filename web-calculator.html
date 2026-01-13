@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор Акселион - Веб версия</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .calculator {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .display {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 24px;
+            min-height: 60px;
+            word-break: break-all;
+        }
+        
+        .history {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        button {
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .number {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .operation {
+            background: #667eea;
+            color: white;
+        }
+        
+        .equals {
+            background: #4CAF50;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .clear {
+            background: #f44336;
+            color: white;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>🧮 Калькулятор Акселион</h1>
+        
+        <div class="display" id="display">0</div>
+        
+        <div class="history" id="history">
+            <strong>История:</strong>
+            <div id="history-list"></div>
+        </div>
+        
+        <div class="buttons">
+            <button class="clear" onclick="clearAll()">C</button>
+            <button class="clear" onclick="clearEntry()">CE</button>
+            <button class="operation" onclick="appendOperation('/')">/</button>
+            <button class="operation" onclick="appendOperation('*')">×</button>
+            
+            <button class="number" onclick="appendNumber('7')">7</button>
+            <button class="number" onclick="appendNumber('8')">8</button>
+            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="operation" onclick="appendOperation('-')">-</button>
+            
+            <button class="number" onclick="appendNumber('4')">4</button>
+            <button class="number" onclick="appendNumber('5')">5</button>
+            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="operation" onclick="appendOperation('+')">+</button>
+            
+            <button class="number" onclick="appendNumber('1')">1</button>
+            <button class="number" onclick="appendNumber('2')">2</button>
+            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="equals" onclick="calculate()" rowspan="2">=</button>
+            
+            <button class="number" onclick="appendNumber('0')">0</button>
+            <button class="number" onclick="appendNumber('.')">.</button>
+            <button class="operation" onclick="appendOperation('^')">^</button>
+        </div>
+        
+        <div class="footer">
+            Команда Акселион | БИЗ-Б-0-Д-2025-1
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '0';
+        let previousInput = '';
+        let operation = null;
+        let calculationHistory = [];
+        
+        const display = document.getElementById('display');
+        const historyList = document.getElementById('history-list');
+        
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+        
+        function updateHistory() {
+            historyList.innerHTML = calculationHistory
+                .map(item => ${item.expression} = )
+                .join('<br>');
+        }
+        
+        function appendNumber(number) {
+            if (currentInput === '0' || currentInput === 'Error') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+        
+        function appendOperation(op) {
+            if (currentInput === 'Error') return;
+            
+            if (operation !== null) {
+                calculate();
+            }
+            
+            previousInput = currentInput;
+            operation = op;
+            currentInput = '0';
+        }
+        
+        function calculate() {
+            if (operation === null || previousInput === '') return;
+            
+            let result;
+            const a = parseFloat(previousInput);
+            const b = parseFloat(currentInput);
+            
+            try {
+                switch(operation) {
+                    case '+':
+                        result = a + b;
+                        break;
+                    case '-':
+                        result = a - b;
+                        break;
+                    case '*':
+                        result = a * b;
+                        break;
+                    case '/':
+                        if (b === 0) throw new Error('Деление на ноль!');
+                        result = a / b;
+                        break;
+                    case '^':
+                        result = Math.pow(a, b);
+                        break;
+                    default:
+                        return;
+                }
+                
+                // Добавляем в историю
+                calculationHistory.push({
+                    expression: ${a}  ,
+                    result: result
+                });
+                
+                // Ограничиваем историю 10 последними операциями
+                if (calculationHistory.length > 10) {
+                    calculationHistory.shift();
+                }
+                
+                currentInput = result.toString();
+                previousInput = '';
+                operation = null;
+                
+                updateHistory();
+                updateDisplay();
+                
+            } catch (error) {
+                currentInput = 'Error';
+                previousInput = '';
+                operation = null;
+                updateDisplay();
+                setTimeout(() => {
+                    currentInput = '0';
+                    updateDisplay();
+                }, 1500);
+            }
+        }
+        
+        function clearAll() {
+            currentInput = '0';
+            previousInput = '';
+            operation = null;
+            updateDisplay();
+        }
+        
+        function clearEntry() {
+            currentInput = '0';
+            updateDisplay();
+        }
+        
+        // Инициализация
+        updateDisplay();
+    </script>
+</body>
+</html>
